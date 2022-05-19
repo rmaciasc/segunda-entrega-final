@@ -3,7 +3,7 @@ const { Router } = express;
 
 import {
   productosDao as productosApi,
-  carritosDao as carritosApi,
+  carritosDao as cartApi,
 } from './daos/index.js';
 
 //--------------------------------------------

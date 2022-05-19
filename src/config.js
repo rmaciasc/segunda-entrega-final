@@ -16,4 +16,8 @@ export default {
       port: 3306,
     },
   },
+  mongodb: {
+    url: 'mongodb://localhost:27017/ecommerce',
+  },
+  firebase: {},
 };

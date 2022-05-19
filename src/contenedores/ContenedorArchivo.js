@@ -1,4 +1,5 @@
-const fs = require('fs');
+import fs from 'fs';
+import config from '../config';
 
 class ContenedorArchivo {
   constructor(ruta) {
@@ -117,4 +118,4 @@ class ContenedorArchivo {
   }
 }
 
-module.exports = ContenedorArchivo;
+export default ContenedorArchivo;
