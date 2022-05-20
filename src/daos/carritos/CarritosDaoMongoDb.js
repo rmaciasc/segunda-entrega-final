@@ -1,10 +1,16 @@
-import ContenedorMongoDb from '../../contenedores/ContenedorMongoDb';
+import ContenedorMongoDb from '../../contenedores/ContenedorMongoDb.js';
 
 class CarritosDaoMongoDb extends ContenedorMongoDb {
-  constructor(schemaCarritos, schemaProductosEnCarritos) {
-    this.carritos = new ContenedorMongoDb('carritos', schemaCarritos);
+  constructor(
+    collectionCarritos,
+    schemaCarritos,
+    collectionProductosEnCarritos,
+    schemaProductosEnCarritos
+  ) {
+    super(collectionCarritos, schemaCarritos);
+    this.carritos = new ContenedorMongoDb(collectionCarritos, schemaCarritos);
     this.productosEnCarritos = new ContenedorMongoDb(
-      'productosEnCarritos',
+      collectionProductosEnCarritos,
       schemaProductosEnCarritos
     );
   }

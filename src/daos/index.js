@@ -1,13 +1,15 @@
+import mongoose from 'mongoose';
+
 let productosDao;
 let carritosDao;
 
 switch (process.env.PERS) {
   case 'firebase':
     const { default: ProductosDaoFirebase } = await import(
-      './productos/ProductosDaoFirebase'
+      './productos/ProductosDaoFirebase.js'
     );
     const { default: CarritosDaoFirebase } = await import(
-      './carritos/CarritosDaoFirebase'
+      './carritos/CarritosDaoFirebase.js'
     );
     productosDao = new ProductosDaoFirebase();
     carritosDao = new CarritosDaoFirebase();
@@ -15,13 +17,33 @@ switch (process.env.PERS) {
 
   case 'mongodb':
     const { default: ProductosDaoMongoDB } = await import(
-      './productos/ProductosDaoMongoDB'
+      './productos/ProductosDaoMongoDB.js'
     );
     const { default: CarritosDaoMongoDB } = await import(
-      './carritos/CarritosDaoMongoDB'
+      './carritos/CarritosDaoMongoDB.js'
     );
-    productosDao = new ProductosDaoMongoDB();
-    carritosDao = new CarritosDaoMongoDB();
+    const schemaProductos = new mongoose.Schema({
+      title: String,
+      price: Number,
+      thumbnail: String,
+    });
+
+    const schemaProductosEnCarritos = new mongoose.Schema({
+      id: Number,
+    });
+
+    const schemaCarritos = new mongoose.Schema({
+      productos: [schemaProductosEnCarritos],
+      id: Number,
+      date: String,
+    });
+    productosDao = new ProductosDaoMongoDB('productos', schemaProductos);
+    carritosDao = new CarritosDaoMongoDB(
+      'carritos',
+      schemaCarritos,
+      'productosencarritos',
+      schemaProductosEnCarritos
+    );
     break;
 
   case 'mariadb':

@@ -1,13 +1,19 @@
-import config from '../config';
 import mongoose from 'mongoose';
 
 class ContenedorMongoDb {
-  constructor(collection, schema, config = config) {
+  constructor(collection, schema) {
     this.collection = collection;
     this.schema = schema;
-    this.config = config;
-    mongoose.connect(this.config.mongodb.url);
-    this.model = new mongoose.model(this.collection, this.schema);
+    this.config = {
+      mongodb: {
+        url: 'mongodb://localhost:27017/ecommerce',
+      },
+    };
+    mongoose.connect(this.config.mongodb.url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    this.model = mongoose.model(this.collection, this.schema);
   }
 
   async listar(id) {

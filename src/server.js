@@ -143,4 +143,4 @@ app.use((req, res, next) => {
 app.use('/api/productos', productosRouter);
 app.use('/api/carritos', carritosRouter);
 
-module.exports = app;
+export default app;

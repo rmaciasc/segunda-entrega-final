@@ -1,11 +1,11 @@
 export default {
-  sqlite3: {
-    client: 'sqlite3',
-    connection: {
-      filename: `${__dirname}\\DB\\ecommerce.sqlite`,
-    },
-    useNullAsDefault: true,
-  },
+  // sqlite3: {
+  //   client: 'sqlite3',
+  //   connection: {
+  //     filename: `${__dirname}\\DB\\ecommerce.sqlite`,
+  //   },
+  //   useNullAsDefault: true,
+  // },
   mariaDb: {
     client: 'mysql',
     connection: {
