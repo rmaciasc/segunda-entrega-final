@@ -16,6 +16,7 @@ switch (process.env.PERS) {
     break;
 
   case 'mongodb':
+    console.log('Using mongodb');
     const { default: ProductosDaoMongoDB } = await import(
       './productos/ProductosDaoMongoDB.js'
     );
@@ -23,9 +24,9 @@ switch (process.env.PERS) {
       './carritos/CarritosDaoMongoDB.js'
     );
     const schemaProductos = new mongoose.Schema({
-      title: String,
-      price: Number,
-      thumbnail: String,
+      title: { type: String, required: true, max: 50 },
+      price: { type: Number, required: true },
+      thumbnail: { type: String, required: true },
     });
 
     const schemaProductosEnCarritos = new mongoose.Schema({
@@ -37,7 +38,7 @@ switch (process.env.PERS) {
       id: Number,
       date: String,
     });
-    productosDao = new ProductosDaoMongoDB('productos', schemaProductos);
+    productosDao = new ProductosDaoMongoDB(schemaProductos);
     carritosDao = new CarritosDaoMongoDB(
       'carritos',
       schemaCarritos,

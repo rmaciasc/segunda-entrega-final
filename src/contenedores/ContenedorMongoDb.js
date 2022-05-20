@@ -42,7 +42,10 @@ class ContenedorMongoDb {
   }
 
   async guardar(elem) {
-    return await new this.model.create(elem);
+    const elemSaveModel = new this.model(elem);
+    const elemSaved = await elemSaveModel.save();
+    return elemSaved;
+    // return await new this.model.create(elem);
   }
 
   async actualizar(elem, id) {

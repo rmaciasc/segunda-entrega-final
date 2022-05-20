@@ -54,8 +54,7 @@ productosRouter.put('/:id', soloAdmins, async (req, res) => {
 });
 
 productosRouter.post('/', soloAdmins, async (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*');
-
+  // res.header('Access-Control-Allow-Origin', '*');
   const id = await productosApi.guardar(req.body);
   res.json({ id });
 });
@@ -71,27 +70,27 @@ productosRouter.delete('/:id', soloAdmins, async (req, res) => {
 const carritosRouter = new Router();
 //
 carritosRouter.get('/', async (req, res) => {
-  const cart = await cartApi.listarAll();
+  const cart = await cartApi.carritos.listarAll();
   if (cart == null) {
     res.json('No existen carritos');
   } else {
-    res.json(cart.map((carrito) => carrito.id));
+    res.json(cart);
   }
 });
 // Gets products in a cart.
 carritosRouter.get('/:id/productos', async (req, res) => {
-  const cart = await cartApi.listar(req.params.id);
+  const cart = await cartApi.productosEnCarritos.listar(req.params.id);
   res.json(cart.productos);
 });
 // Creates a cart
 carritosRouter.post('/', async (req, res) => {
-  const newCartId = await cartApi.guardar({ productos: [] });
+  const newCartId = await cartApi.carritos.guardar({ productos: [] });
   res.json({ newCartId });
 });
 
 // Saves a product into a cart.
 carritosRouter.post('/:id/productos', async (req, res) => {
-  const cart = await cartApi.listar(req.params.id);
+  const cart = await cartApi.carritos.listar(req.params.id);
   if (cart) {
     const prod = req.body;
     cart.productos.push(prod);
