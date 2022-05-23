@@ -10,16 +10,14 @@ class ContenedorMongoDb {
       },
     };
     mongoose.connect(this.config.mongodb.url, {
-      useNewUrlParser: true,
       useUnifiedTopology: true,
+      useNewUrlParser: true,
     });
     this.model = mongoose.model(this.collection, this.schema);
   }
 
   async listar(id) {
-    id = parseInt(id);
-    const result = await this.model.find({ id: id });
-    console.log(result);
+    const result = await this.model.findOne({ _id: id });
     if (!result) {
       return { error: 'id no encontrado' };
     } else {
@@ -42,20 +40,22 @@ class ContenedorMongoDb {
   }
 
   async guardar(elem) {
-    const elemSaveModel = new this.model(elem);
-    const elemSaved = await elemSaveModel.save();
-    return elemSaved;
-    // return await new this.model.create(elem);
+    try {
+      elem.date = new Date().toLocaleString();
+      const elemSaveModel = new this.model(elem);
+      const elemSaved = await elemSaveModel.save();
+      return elemSaved;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async actualizar(elem, id) {
-    id = parseInt(id);
-    return await this.model.updateOne({ id: id }, elem);
+    return await this.model.updateOne({ _id: id }, elem);
   }
 
   async borrar(id) {
-    id = parseInt(id);
-    return await this.model.deleteOne({ id: id });
+    return await this.model.deleteOne({ _id: id });
   }
 
   async borrarAll() {

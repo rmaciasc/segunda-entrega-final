@@ -5,6 +5,7 @@ let carritosDao;
 
 switch (process.env.PERS) {
   case 'firebase':
+    console.log('Usando firebase');
     const { default: ProductosDaoFirebase } = await import(
       './productos/ProductosDaoFirebase.js'
     );
@@ -27,29 +28,23 @@ switch (process.env.PERS) {
       title: { type: String, required: true, max: 50 },
       price: { type: Number, required: true },
       thumbnail: { type: String, required: true },
+      date: {
+        type: Date,
+        required: true,
+      },
     });
 
     const schemaProductosEnCarritos = new mongoose.Schema({
-      id: Number,
+      id: { type: String, required: true },
     });
 
     const schemaCarritos = new mongoose.Schema({
       productos: [schemaProductosEnCarritos],
-      id: Number,
-      date: String,
+      date: { type: Date, required: true },
     });
     productosDao = new ProductosDaoMongoDB(schemaProductos);
-    carritosDao = new CarritosDaoMongoDB(
-      'carritos',
-      schemaCarritos,
-      'productosencarritos',
-      schemaProductosEnCarritos
-    );
+    carritosDao = new CarritosDaoMongoDB('carritos', schemaCarritos);
     break;
-
-  case 'mariadb':
-
-  case 'sqlite3':
 
   case 'json':
     const { default: ProductosDaoArchivo } = await import(
